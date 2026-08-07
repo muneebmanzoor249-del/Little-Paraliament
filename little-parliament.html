@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Little Parliament — Rainbow Beach</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,700;9..144,900&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy-950:#0a1b33;
+    --navy-800:#122a4d;
+    --navy-600:#1e3f6e;
+    --paper:#f7f4ec;
+    --paper-2:#fbf9f4;
+    --brass:#a8874f;
+    --line: rgba(10,27,51,0.14);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--paper);
+    color:var(--navy-950);
+    font-family:'Jost',sans-serif;
+    font-weight:400;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{
+    font-family:'Fraunces',serif;
+    font-weight:900;
+    color:var(--navy-950);
+    letter-spacing:-0.01em;
+  }
+  a{color:inherit;text-decoration:none;}
+  img{max-width:100%;display:block;}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 32px;}
+
+  @media (prefers-reduced-motion: no-preference){
+    .reveal{opacity:0;transform:translateY(18px);transition:opacity .8s ease, transform .8s ease;}
+    .reveal.in{opacity:1;transform:translateY(0);}
+  }
+
+  /* NAV */
+  header{
+    position:fixed;top:0;left:0;right:0;z-index:50;
+    background:rgba(247,244,236,0.86);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  nav.wrap{
+    display:grid;grid-template-columns:1fr auto 1fr;align-items:center;
+    height:84px;
+  }
+  .brand{
+    font-family:'Fraunces',serif;font-weight:900;font-size:1.3rem;
+    letter-spacing:0.03em;color:var(--navy-950);
+    justify-self:center;
+  }
+  .navlinks{justify-self:start;}
+  header .btn{justify-self:end;}
+  .brand span{color:var(--brass);}
+  .navlinks{display:flex;gap:36px;font-size:0.85rem;letter-spacing:0.08em;text-transform:uppercase;}
+  .navlinks a{opacity:0.75;transition:opacity .25s;}
+  .navlinks a:hover{opacity:1;}
+  .navlinks{color:var(--navy-800);}
+  @media (max-width:760px){ .navlinks{display:none;} }
+
+  /* HERO */
+  .hero{
+    position:relative;
+    min-height:100vh;
+    display:flex;align-items:center;
+    padding-top:84px;
+    overflow:hidden;
+    background:
+      linear-gradient(180deg, rgba(10,27,51,0.88) 0%, rgba(18,42,77,0.86) 55%, rgba(30,63,110,0.92) 100%),
+      url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+    color:var(--paper);
+  }
+  .hero .wrap{position:relative;z-index:2;width:100%;}
+  .eyebrow{
+    font-size:0.78rem;letter-spacing:0.28em;text-transform:uppercase;
+    color:var(--brass);margin-bottom:26px;
+    display:flex;align-items:center;gap:14px;
+  }
+  .eyebrow::before{content:"";width:36px;height:1px;background:var(--brass);}
+  .hero h1{
+    font-size:clamp(2.8rem, 7vw, 5.4rem);
+    color:var(--paper-2);
+    line-height:0.98;
+    max-width:14ch;
+  }
+  .hero h1 em{
+    font-style:italic;font-weight:500;color:var(--brass);
+  }
+  .hero-sub{
+    margin-top:28px;max-width:46ch;
+    font-size:1.05rem;color:rgba(247,244,236,0.72);
+    font-weight:300;
+  }
+  .hero-cta{
+    margin-top:44px;display:flex;gap:18px;flex-wrap:wrap;
+  }
+  .btn{
+    display:inline-block;padding:15px 34px;
+    font-size:0.82rem;letter-spacing:0.14em;text-transform:uppercase;
+    border:1px solid var(--brass);
+    transition:background .3s, color .3s;
+  }
+  .btn-solid{background:var(--brass);color:var(--navy-950);}
+  .btn-solid:hover{background:transparent;color:var(--brass);}
+  .btn-line{color:var(--paper-2);border-color:rgba(247,244,236,0.4);}
+  .btn-line:hover{border-color:var(--paper-2);}
+
+  .hero-wave{
+    position:absolute;bottom:0;left:0;right:0;line-height:0;z-index:1;
+  }
+
+  /* SEAL / signature mark */
+  .seal{
+    position:absolute;right:6%;top:50%;transform:translateY(-50%);
+    width:220px;height:220px;border-radius:50%;
+    border:1px solid rgba(168,135,79,0.5);
+    display:flex;align-items:center;justify-content:center;
+    opacity:0.5;
+  }
+  .seal::before{
+    content:"";position:absolute;inset:14px;border:1px solid rgba(168,135,79,0.3);border-radius:50%;
+  }
+  .seal-text{
+    font-family:'Fraunces',serif;font-size:0.68rem;letter-spacing:0.3em;
+    color:var(--brass);text-transform:uppercase;text-align:center;
+  }
+  @media (max-width:900px){ .seal{display:none;} }
+
+  /* GALLERY */
+  .gallery{background:var(--paper);padding-top:0;}
+  .gallery-strip{
+    display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:18px;
+  }
+  @media (max-width:760px){ .gallery-strip{grid-template-columns:1fr 1fr;} }
+  .gallery-strip figure{
+    margin:0;overflow:hidden;position:relative;
+    aspect-ratio:1/1;
+  }
+  .gallery-strip figure:first-child{grid-row:span 2;aspect-ratio:auto;}
+  .gallery-strip img{
+    width:100%;height:100%;object-fit:cover;
+    transition:transform .6s ease;
+  }
+  .gallery-strip figure:hover img{transform:scale(1.05);}
+
+  /* SECTION generic */
+  section{padding:120px 0;}
+  .section-head{max-width:640px;margin-bottom:64px;}
+  .section-head .eyebrow{color:var(--brass);}
+  .section-head h2{font-size:clamp(2.1rem,4vw,3rem);}
+  .section-head p{margin-top:18px;color:rgba(10,27,51,0.65);font-weight:300;max-width:52ch;}
+
+  /* ABOUT */
+  .about{background:var(--paper-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
+  @media (max-width:840px){ .about-grid{grid-template-columns:1fr;gap:48px;} }
+  .about-figure{
+    aspect-ratio:4/5;position:relative;overflow:hidden;
+    background:url('https://images.unsplash.com/photo-1521017432531-fbd92d768814?auto=format&fit=crop&w=900&q=80') center/cover no-repeat;
+  }
+  .about-figure::before{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(180deg, rgba(10,27,51,0.05), rgba(10,27,51,0.55));
+  }
+  .about-figure::after{
+    content:"Little Parliament";
+    position:absolute;left:24px;bottom:22px;z-index:2;
+    font-family:'Fraunces',serif;font-weight:700;font-style:italic;
+    font-size:1.3rem;color:var(--paper-2);
+  }
+  .about-text p{color:rgba(10,27,51,0.72);font-weight:300;margin-bottom:18px;}
+  .about-text p:first-of-type{font-size:1.15rem;color:var(--navy-950);font-weight:400;}
+  .stat-row{display:flex;gap:48px;margin-top:40px;padding-top:32px;border-top:1px solid var(--line);}
+  .stat b{display:block;font-family:'Fraunces',serif;font-weight:900;font-size:2rem;color:var(--navy-800);}
+  .stat span{font-size:0.78rem;letter-spacing:0.08em;text-transform:uppercase;color:rgba(10,27,51,0.5);}
+
+  /* MENU */
+  .menu{background:var(--paper);}
+  .menu-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--line);}
+  @media (max-width:820px){ .menu-grid{grid-template-columns:1fr;} }
+  .menu-item{
+    padding:44px 8px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);
+  }
+  .menu-grid .menu-item:nth-child(3n){border-right:none;}
+  @media (max-width:820px){ .menu-item{border-right:none !important;} }
+  .menu-item .num{font-size:0.75rem;letter-spacing:0.14em;color:var(--brass);}
+  .menu-item h3{margin-top:16px;font-size:1.4rem;font-weight:700;}
+  .menu-item p{margin-top:10px;color:rgba(10,27,51,0.6);font-weight:300;font-size:0.94rem;}
+
+  /* TESTIMONIAL */
+  .testimonial{
+    background:var(--navy-950);color:var(--paper-2);text-align:center;
+  }
+  .testimonial blockquote{
+    font-family:'Fraunces',serif;font-weight:500;font-style:italic;
+    font-size:clamp(1.5rem,3.4vw,2.3rem);max-width:820px;margin:0 auto;
+    line-height:1.4;color:var(--paper-2);
+  }
+  .testimonial cite{
+    display:block;margin-top:32px;font-style:normal;font-size:0.8rem;
+    letter-spacing:0.16em;text-transform:uppercase;color:var(--brass);
+  }
+  .rating{margin-bottom:28px;color:var(--brass);letter-spacing:0.3em;font-size:1.1rem;}
+
+  /* HOURS + VISIT */
+  .visit{background:var(--paper-2);border-top:1px solid var(--line);}
+  .visit-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:80px;}
+  @media (max-width:840px){ .visit-grid{grid-template-columns:1fr;gap:56px;} }
+  .hours-table{width:100%;border-collapse:collapse;margin-top:8px;}
+  .hours-table tr{border-bottom:1px solid var(--line);}
+  .hours-table td{padding:14px 0;font-size:0.95rem;}
+  .hours-table td:first-child{color:var(--navy-950);font-weight:500;letter-spacing:0.02em;}
+  .hours-table td:last-child{text-align:right;color:rgba(10,27,51,0.6);font-weight:300;}
+  .addr-card{
+    background:var(--navy-950);color:var(--paper-2);padding:48px 40px;
+  }
+  .addr-card h3{color:var(--paper-2);font-size:1.5rem;margin-bottom:24px;}
+  .addr-card .line{display:flex;gap:14px;margin-bottom:18px;font-weight:300;color:rgba(247,244,236,0.85);font-size:0.95rem;}
+  .addr-card .line b{color:var(--brass);font-weight:500;min-width:70px;letter-spacing:0.08em;font-size:0.75rem;text-transform:uppercase;}
+  .addr-card .btn{margin-top:16px;}
+
+  footer{
+    background:var(--navy-950);color:rgba(247,244,236,0.55);
+    padding:48px 0;text-align:center;font-size:0.82rem;
+    border-top:1px solid rgba(247,244,236,0.1);
+  }
+  footer .brand{color:var(--paper-2);display:block;margin-bottom:10px;}
+  footer .brand span{color:var(--brass);}
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="wrap">
+    <div class="brand">LITTLE <span>PARLIAMENT</span></div>
+    <div class="navlinks">
+      <a href="#about">About</a>
+      <a href="#menu">Menu</a>
+      <a href="#visit">Visit</a>
+    </div>
+    <a href="tel:+61498384229" class="btn btn-solid" style="padding:10px 22px;">Call</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Rainbow Beach, Queensland</div>
+    <h1>Little<br><em>Parliament</em></h1>
+    <p class="hero-sub">Little Parliament sits a short walk from the dunes — a morning table for the well-brewed, the fresh-baked, and the unhurried. Open daily from 6am.</p>
+    <div class="hero-cta">
+      <a href="#menu" class="btn btn-solid">View the Menu</a>
+      <a href="#visit" class="btn btn-line">Contact Us</a>
+    </div>
+    <div style="margin-top:26px;display:flex;align-items:center;gap:10px;color:var(--brass);font-size:0.9rem;letter-spacing:0.06em;">
+      <span>★★★★★</span>
+      <span style="color:rgba(247,244,236,0.7);font-weight:300;">4.6 Rating · 662+ Reviews</span>
+    </div>
+  </div>
+  <div class="seal">
+    <div class="seal-text">Rainbow<br>Beach<br>· Est. Local ·</div>
+  </div>
+  <div class="hero-wave">
+    <svg viewBox="0 0 1440 100" preserveAspectRatio="none" style="width:100%;height:80px;display:block;">
+      <path d="M0,60 C240,110 480,10 720,50 C960,90 1200,20 1440,60 L1440,100 L0,100 Z" fill="#f7f4ec"></path>
+    </svg>
+  </div>
+</section>
+
+<section class="about" id="about">
+  <div class="wrap about-grid">
+    <div class="about-figure reveal"></div>
+    <div class="about-text reveal">
+      <div class="eyebrow" style="color:var(--brass);">Our House</div>
+      <h2 style="margin-bottom:22px;">Breakfast, deliberated properly</h2>
+      <p>Every plate here is debated before it's plated — good coffee, good bread, good company. Little Parliament has become the address locals and travellers alike bring their mornings to.</p>
+      <p>Sit in, take away, or linger over the paper. Either way, the espresso is pulled with the same care as the first day we opened.</p>
+      <div class="stat-row">
+        <div class="stat"><b>4.6</b><span>Average Rating</span></div>
+        <div class="stat"><b>662+</b><span>Guest Reviews</span></div>
+        <div class="stat"><b>7</b><span>Days a Week</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="menu" id="menu">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">The Table</div>
+      <h2>House Favourites</h2>
+      <p>A short, considered selection — the dishes our regulars order by name, not number.</p>
+    </div>
+  </div>
+  <div class="wrap gallery reveal" style="padding:0 32px 64px;">
+    <div class="gallery-strip">
+      <figure><img src="https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?auto=format&fit=crop&w=900&q=80" alt="French toast breakfast plate"></figure>
+      <figure><img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=700&q=80" alt="Coffee cup on saucer"></figure>
+      <figure><img src="https://images.unsplash.com/photo-1447933601403-0c6688de566e?auto=format&fit=crop&w=700&q=80" alt="Rainbow Beach coastline"></figure>
+      <figure><img src="https://images.unsplash.com/photo-1447933601403-0c6688de566e?auto=format&fit=crop&w=700&q=80" alt="Beach town street"></figure>
+      <figure><img src="https://images.unsplash.com/photo-1517701604599-bb29b565090c?auto=format&fit=crop&w=700&q=80" alt="Cafe table setting"></figure>
+    </div>
+  </div>
+  <div class="wrap" style="padding:0;">
+    <div class="menu-grid">
+      <div class="menu-item"><div class="num">I</div><h3>French Toast</h3><p>Brioche, seasonal fruit, maple — the plate people drive back for.</p></div>
+      <div class="menu-item"><div class="num">II</div><h3>Corn Fritters</h3><p>Charred corn, greens, whipped feta, chilli butter.</p></div>
+      <div class="menu-item"><div class="num">III</div><h3>Iced Coffee</h3><p>Cold milk, vanilla ice cream, double espresso poured tableside.</p></div>
+      <div class="menu-item"><div class="num">IV</div><h3>Lemon &amp; Thyme Iced Tea</h3><p>House-steeped, bright, unapologetically refreshing.</p></div>
+      <div class="menu-item"><div class="num">V</div><h3>Hash &amp; Sausage</h3><p>Crisp hash browns, herbed sausage, slow-roast tomato.</p></div>
+      <div class="menu-item"><div class="num">VI</div><h3>Nachos to Share</h3><p>Built for the table, not the individual.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="testimonial">
+  <div class="wrap reveal">
+    <div class="rating">★★★★★</div>
+    <blockquote>"The staff are so friendly and the food and coffee is great — every plate we ordered was ten out of ten."</blockquote>
+    <cite>— A Guest, Google Reviews</cite>
+  </div>
+</section>
+
+<section class="visit" id="visit">
+  <div class="wrap visit-grid">
+    <div class="reveal">
+      <div class="eyebrow" style="color:var(--brass);">Open Daily</div>
+      <h2 style="margin-bottom:8px;">Hours</h2>
+      <table class="hours-table">
+        <tr><td>Monday</td><td>6:00 AM – 2:30 PM</td></tr>
+        <tr><td>Tuesday</td><td>6:00 AM – 2:30 PM</td></tr>
+        <tr><td>Wednesday</td><td>6:00 AM – 2:30 PM</td></tr>
+        <tr><td>Thursday</td><td>6:00 AM – 2:30 PM</td></tr>
+        <tr><td>Friday</td><td>6:00 AM – 2:30 PM</td></tr>
+        <tr><td>Saturday</td><td>6:00 AM – 2:30 PM</td></tr>
+        <tr><td>Sunday</td><td>6:00 AM – 2:30 PM</td></tr>
+      </table>
+    </div>
+    <div class="reveal">
+      <div class="addr-card">
+        <h3>Find Little Parliament</h3>
+        <div class="line"><b>Address</b> 12 Rainbow Beach Rd, Rainbow Beach QLD 4581, Australia</div>
+        <div class="line"><b>Phone</b> +61 498 384 229</div>
+        <div class="line"><b>Book</b> Walk-ins welcome, tables fill fast on weekends</div>
+        <a href="https://maps.app.goo.gl/oppjkisQncetQLrs6" target="_blank" class="btn btn-solid">Get Directions</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span class="brand">LITTLE <span>PARLIAMENT</span></span>
+    12 Rainbow Beach Rd, Rainbow Beach QLD · © 2026
+  </div>
+</footer>
+
+<script>
+  const items = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  },{threshold:0.15});
+  items.forEach(i=>io.observe(i));
+</script>
+
+</body>
+</html>
